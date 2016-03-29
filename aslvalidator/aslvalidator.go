@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"path"
 
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
@@ -27,7 +28,9 @@ func main() {
 	var qGroup = flag.String("qg", "aslvalidation", "The consumer group to join for parallel processing")
 	var state = flag.String("state", "naplan", "The state identifier for this service [VIC, SA, NT, WA, ACT, TAS, NSW, QLD]")
 
-	f, err := os.Open("./schoolslist/asl_schools.csv")
+	// get rooted directory
+	_, currentFilePath, _, _ := runtime.Caller(0)
+	f, err := os.Open(path.Join(path.Join(path.Dir(currentFilePath),  "schoolslist"), "asl_schools.csv"))
 	reader := csv.WithIoReader(f)
 	records, err := csv.ReadAll(reader)
 	log.Printf("ASL records read: %v", len(records))

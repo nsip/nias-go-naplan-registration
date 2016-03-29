@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+        "runtime"
+        "path"
 
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
@@ -17,6 +19,8 @@ import (
 )
 
 func main() {
+
+        _, currentFilePath, _, _ := runtime.Caller(0)
 
 	// set up nats broker connections
 	nc, con_error := nats.Connect(nats.DefaultURL)
@@ -93,13 +97,13 @@ func main() {
 	log.Println(exeDir)
 
 	// main javascript web client
-	e.ServeFile("/validation", "./public/validation.html")
+	e.ServeFile("/validation", path.Join(path.Join(path.Dir(currentFilePath), "public"), "validation.html"))
 
 	// support files
-	e.Static("/css/", "./public/css")
-	e.Static("/images/", "./public/images")
-	e.Static("/javascript/", "./public/javascript")
-	e.Static("/fileupload/", "./public/fileupload")
+	e.Static("/css/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "css"))
+	e.Static("/images/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "images"))
+	e.Static("/javascript/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "javascript"))
+	e.Static("/fileupload/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "fileupload"))
 
 	// Routes
 	// The endpoint to post input csv files to

@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"runtime"
+	"path"
 
 	"github.com/kardianos/osext"
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
@@ -29,6 +30,7 @@ func main() {
 
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
+        _, currentFilePath, _, _ := runtime.Caller(0)
 
 	log.SetFlags(0)
 	flag.Parse()
@@ -43,7 +45,7 @@ func main() {
 	// load the validation schema once for efficiency
 	loadSchema := func() *gojsonschema.Schema {
 
-		s, readerr := ioutil.ReadFile("schemas/" + *jsonSchema)
+		s, readerr := ioutil.ReadFile(path.Join(path.Join(path.Dir(currentFilePath),  "schemas") , *jsonSchema))
 		if readerr != nil {
 			log.Fatalf("Unable to open schema file, service aborting...")
 		}
