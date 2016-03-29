@@ -2,14 +2,19 @@
 
 echo "Building Mac binaries..."
 cd ./aggregator
+go get
 go build 
 cd ../aslvalidator
+go get
 go build
 cd ../dobvalidator
+go get
 go build
 cd ../idvalidator
+go get
 go build
 cd ../schemavalidator
+go get
 go build
 echo "...all Mac binaries built..."
 cd ..
