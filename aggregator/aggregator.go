@@ -10,7 +10,7 @@ import (
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
+	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
 	"github.com/wildducktheories/go-csv"

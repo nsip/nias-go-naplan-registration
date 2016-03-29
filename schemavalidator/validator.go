@@ -12,7 +12,7 @@ import (
 	"runtime"
 
 	"github.com/kardianos/osext"
-	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
+	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/xeipuuv/gojsonschema"
 )

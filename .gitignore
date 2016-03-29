@@ -22,3 +22,9 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+aggregator/aggregator
+aslvalidator/aslvalidator
+dobvalidator/dobvalidator
+idvalidator/idvalidator
+schemavalidator/schemavalidator
