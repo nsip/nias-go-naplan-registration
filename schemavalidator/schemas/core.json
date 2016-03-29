@@ -1,0 +1,500 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://naplan.edu.au",
+    "type": "object",
+    "title": "NAPLAN validation schema",
+    "description": "Schema for validating student registrations for NAPLAN SRM",
+    "name": "/",
+    "properties": {
+        "ASLSchoolId": {
+            "id": "http://naplan.edu.au/ASLSchoolId",
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 10, 
+            "title": "ASLSchoolId schema.",
+            "description": "All students must be associated with a valid ASL ID.",
+            "name": "ASLSchoolId"
+        },
+        "AddressLine1": {
+            "id": "http://naplan.edu.au/AddressLine1",
+            "type": "string",
+            "title": "AddressLine1 schema.",
+            "maxLength": 40,
+            "description": "First line of student address.",
+            "name": "AddressLine1"
+        },
+        "AddressLine2": {
+            "id": "http://naplan.edu.au/AddressLine2",
+            "type": "string",
+            "title": "AddressLine2 schema.",
+            "maxLength": 40,
+            "description": "Second line of student address.",
+            "name": "AddressLine2"
+        },
+        "BirthDate": {
+            "id": "http://naplan.edu.au/BirthDate",
+            "type": "string",
+            "title": "BirthDate schema.",
+            "maxLength": 10,
+            "minLength": 10,
+            "description": "Date of Birth for this student.",
+            "name": "BirthDate"
+        },
+        "ClassCode": {
+            "id": "http://naplan.edu.au/ClassCode",
+            "type": "string",
+            "title": "ClassCode schema.",
+            "maxLength": 10,
+            "description": "Description",
+            "name": "ClassCode"
+        },
+        "CountryOfBirth": {
+            "id": "http://naplan.edu.au/CountryOfBirth",
+            "type": "string",
+            "title": "CountryOfBirth schema.",
+            "description": "Description",
+            "maxLength": 4,
+            "name": "CountryOfBirth"
+        },
+        "DiocesanId": {
+            "id": "http://naplan.edu.au/DiocesanId",
+            "type": "string",
+            "title": "DiocesanId schema.",
+            "maxLength": 36,
+            "description": "A student identifier applied by a diocese.",
+            "name": "DiocesanId"
+        },
+        "EducationSupport": {
+            "id": "http://naplan.edu.au/EducationSupport",
+            "type": "string",
+            "title": "EducationSupport schema.",
+            "description": "Description",
+            "enum":["Y","N","U","X"],
+            "name": "EducationSupport"
+        },
+        "FFPOS": {
+            "id": "http://naplan.edu.au/FFPOS",
+            "type": "string",
+            "title": "FFPOS schema.",
+            "description": "Is this a Full Fee Paying Student.",
+            "enum":["1","2","9"],            
+            "name": "FFPOS"
+        },
+        "FTE": {
+            "id": "http://naplan.edu.au/FTE",
+            "type": "string",
+            "title": "FTE schema.",
+            "maxLength": 4,
+            "description": "Description",
+            "name": "FTE"
+        },
+        "FamilyName": {
+            "id": "http://naplan.edu.au/FamilyName",
+            "type": "string",
+            "title": "FamilyName schema.",
+            "maxLength": 40,
+            "description": "Description",
+            "name": "FamilyName"
+        },
+        "GivenName": {
+            "id": "http://naplan.edu.au/GivenName",
+            "type": "string",
+            "title": "GivenName schema.",
+            "description": "Description",
+            "maxLength": 40,
+            "name": "GivenName"
+        },
+        "HomeSchooledStudent": {
+            "id": "http://naplan.edu.au/HomeSchooledStudent",
+            "type": "string",
+            "title": "HomeSchooledStudent schema.",
+            "description": "Description",
+            "enum":["Y","N","U","X"],
+            "name": "HomeSchooledStudent"
+        },
+        "Homegroup": {
+            "id": "http://naplan.edu.au/Homegroup",
+            "type": "string",
+            "title": "Homegroup schema.",
+            "maxLength": 10,
+            "description": "Description",
+            "name": "Homegroup"
+        },
+        "IndigenousStatus": {
+            "id": "http://naplan.edu.au/IndigenousStatus",
+            "type": "string",
+            "title": "IndigenousStatus schema.",
+            "enum": [ "1", "2", "3", "4", "9" ],
+            "description": "Description",
+            "name": "IndigenousStatus"
+        },
+        "JurisdictionId": {
+            "id": "http://naplan.edu.au/JurisdictionId",
+            "type": "string",
+            "title": "JurisdictionId schema.",
+            "maxLength": 36,
+            "description": "Student Id assigned by jurisdiction, such as a state-level ID.",
+            "name": "JurisdictionId"
+        },        
+        "LBOTE": {
+            "id": "http://naplan.edu.au/LBOTE",
+            "type": "string",
+            "title": "LBOTE schema.",
+            "enum": [ "Y", "N", "U", "X" ],
+            "description": "Description",
+            "name": "LBOTE"
+        },
+        "LocalCampusId": {
+            "id": "http://naplan.edu.au/LocalCampusId",
+            "type": "string",
+            "title": "LocalCampusId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "LocalCampusId"
+        },
+        "LocalId": {
+            "id": "http://naplan.edu.au/LocalId",
+            "type": "string",
+            "title": "LocalId schema.",
+            "description": "The student id assigned by and used by local school administrative system. Ideally a persistent Local Student Identifier from source system.  Assumed this will be local per school Student Information System.",
+            "maxLength": 36,
+            "name": "LocalId"
+        },
+        "Locality": {
+            "id": "http://naplan.edu.au/Locality",
+            "type": "string",
+            "title": "Locality schema.",
+            "maxLength": 40,
+            "description": "Description",
+            "name": "Locality"
+        },
+        "MainSchoolFlag": {
+            "id": "http://naplan.edu.au/MainSchoolFlag",
+            "type": "string",
+            "title": "MainSchoolFlag schema.",
+            "description": "Description",
+            "enum": ["Y","1","2","3"],
+            "name": "MainSchoolFlag"
+        },
+        "MiddleName": {
+            "id": "http://naplan.edu.au/MiddleName",
+            "type": "string",
+            "title": "MiddleName schema.",
+            "description": "Description",
+            "maxLength": 40,
+            "name": "MiddleName"
+        },
+        "NationalId": {
+            "id": "http://naplan.edu.au/NationalId",
+            "type": "string",
+            "title": "NationalId schema.",
+            "maxLength": 36,
+            "description": "Placeholder for a Nationally persistent Student Identifier.",
+            "name": "NationalId"
+        },
+        "OfflineDelivery": {
+            "id": "http://naplan.edu.au/OfflineDelivery",
+            "type": "string",
+            "title": "OfflineDelivery schema.",
+            "description": "Description",
+            "enum": ["Y","N","U","X"],
+            "name": "OfflineDelivery"
+        },
+        "OtherId": {
+            "id": "http://naplan.edu.au/OtherId",
+            "type": "string",
+            "title": "OtherId schema.",
+            "maxLength": 36,
+            "description": "Any other Student Identifier deemed useful for NAPLAN purposes.",
+            "name": "OtherId"
+        },
+        "OtherSchoolId": {
+            "id": "http://naplan.edu.au/OtherSchoolId",
+            "type": "string",
+            "title": "OtherSchoolId schema.",
+            "description": "Description",
+            "maxLength": 36,            
+            "name": "OtherSchoolId"
+        },
+        "Parent1LOTE": {
+            "id": "http://naplan.edu.au/Parent1LOTE",
+            "type": "string",
+            "title": "Parent1LOTE schema.",
+            "description": "Description",
+            "maxLength": 4,
+            "name": "Parent1LOTE"
+        },
+        "Parent1NonSchoolEducation": {
+            "id": "http://naplan.edu.au/Parent1NonSchoolEducation",
+            "type": "string",
+            "title": "Parent1NonSchoolEducation schema.",
+            "description": "Description",
+            "enum": ["5","6","7","8","0"],
+            "name": "Parent1NonSchoolEducation"
+        },
+        "Parent1Occupation": {
+            "id": "http://naplan.edu.au/Parent1Occupation",
+            "type": "string",
+            "title": "Parent1Occupation schema.",
+            "description": "Description",
+            "enum": ["1","2","3","4","8","9"],
+            "name": "Parent1Occupation"
+        },
+        "Parent1SchoolEducation": {
+            "id": "http://naplan.edu.au/Parent1SchoolEducation",
+            "type": "string",
+            "title": "Parent1SchoolEducation schema.",
+            "description": "Description",
+            "enum":["1","2","3","4","0"],
+            "name": "Parent1SchoolEducation"
+        },
+        "Parent2LOTE": {
+            "id": "http://naplan.edu.au/Parent2LOTE",
+            "type": "string",
+            "title": "Parent2LOTE schema.",
+            "description": "Description",
+            "maxLength": 4,
+            "name": "Parent2LOTE"
+        },
+        "Parent2NonSchoolEducation": {
+            "id": "http://naplan.edu.au/Parent2NonSchoolEducation",
+            "type": "string",
+            "title": "Parent2NonSchoolEducation schema.",
+            "description": "Description",
+            "enum": ["5","6","7","8","0"],
+            "name": "Parent2NonSchoolEducation"
+        },
+        "Parent2Occupation": {
+            "id": "http://naplan.edu.au/Parent2Occupation",
+            "type": "string",
+            "title": "Parent2Occupation schema.",
+            "description": "Description",
+            "enum": ["1","2","3","4","8","9"],
+            "name": "Parent2Occupation"
+        },
+        "Parent2SchoolEducation": {
+            "id": "http://naplan.edu.au/Parent2SchoolEducation",
+            "type": "string",
+            "title": "Parent2SchoolEducation schema.",
+            "description": "Description",
+            "enum":["1","2","3","4","0"],
+            "name": "Parent2SchoolEducation"
+        },
+        "PlatformId": {
+            "id": "http://naplan.edu.au/PlatformId",
+            "type": "string",
+            "title": "PlatformId schema.",
+            "maxLength": 36,
+            "description": "Description",
+            "name": "PlatformId"
+        },
+        "Postcode": {
+            "id": "http://naplan.edu.au/Postcode",
+            "type": "string",
+            "title": "Postcode schema.",
+            "maxLength": 4,
+            "description": "Description",
+            "name": "Postcode"
+        },
+        "PreferredName": {
+            "id": "http://naplan.edu.au/PreferredName",
+            "type": "string",
+            "title": "PreferredName schema.",
+            "description": "Description",
+            "maxLength": 40,
+            "name": "PreferredName"
+        },
+        "PreviousDiocesanId": {
+            "id": "http://naplan.edu.au/PreviousDiocesanId",
+            "type": "string",
+            "title": "PreviousDiocesanId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousDiocesanId"
+        },
+        "PreviousJurisdictionId": {
+            "id": "http://naplan.edu.au/PreviousJurisdictionId",
+            "type": "string",
+            "title": "PreviousJurisdictionId schema.",
+            "maxLength": 36,
+            "description": "Student Id assigned by jurisdiction, such as a state-level ID, for this student in a previous cycle of NAPLAN.",
+            "name": "JurisdictionId"
+        },                
+        "PreviousLocalId": {
+            "id": "http://naplan.edu.au/PreviousLocalId",
+            "type": "string",
+            "title": "PreviousLocalId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousLocalId"
+        },
+        "PreviousNationalId": {
+            "id": "http://naplan.edu.au/PreviousNationalId",
+            "type": "string",
+            "title": "PreviousNationalId schema.",
+            "maxLength": 36,
+            "description": "Description",
+            "name": "PreviousNationalId"
+        },
+        "PreviousOtherId": {
+            "id": "http://naplan.edu.au/PreviousOtherId",
+            "type": "string",
+            "title": "PreviousOtherId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousOtherId"
+        },
+        "PreviousPlatformId": {
+            "id": "http://naplan.edu.au/PreviousPlatformId",
+            "type": "string",
+            "title": "PreviousPlatformId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousPlatformId"
+        },
+        "PreviousSectorId": {
+            "id": "http://naplan.edu.au/PreviousSectorId",
+            "type": "string",
+            "title": "PreviousSectorId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousSectorId"
+        },
+        "PreviousStateProvinceId": {
+            "id": "http://naplan.edu.au/PreviousStateProvinceId",
+            "type": "string",
+            "title": "PreviousStateProvinceId schema.",
+            "description": "Description",
+            "name": "PreviousStateProvinceId"
+        },
+        "PreviousTAAId": {
+            "id": "http://naplan.edu.au/PreviousTAAId",
+            "type": "string",
+            "title": "PreviousTAAId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "PreviousTAAId"
+        },
+        "ReportingSchoolId": {
+            "id": "http://naplan.edu.au/ReportingSchoolId",
+            "type": "string",
+            "title": "ReportingSchoolId schema.",
+            "description": "Description",
+            "maxLength": 36,            
+            "name": "ReportingSchoolId"
+        },
+        "SchoolLocalId": {
+            "id": "http://naplan.edu.au/SchoolLocalId",
+            "type": "string",
+            "title": "SchoolLocalId schema.",
+            "description": "Description",
+            "maxLength": 36,
+            "name": "SchoolLocalId"
+        },
+        "SectorId": {
+            "id": "http://naplan.edu.au/SectorId",
+            "type": "string",
+            "title": "SectorId schema.",
+            "description": "An identifier applied by a school sector",
+            "maxLength": 36,
+            "name": "SectorId"
+        },
+        "Sensitive": {
+            "id": "http://naplan.edu.au/Sensitive",
+            "type": "string",
+            "title": "Sensitive schema.",
+            "description": "Description",
+            "enum": ["Y","N","U","X"],
+            "name": "Sensitive"
+        },
+        "Sex": {
+            "id": "http://naplan.edu.au/Sex",
+            "type": "string",
+            "title": "Sex schema.",
+            "enum":["1","2","3","9"],
+            "description": "Description",
+            "name": "Sex"
+        },
+        "StateProvinceId": {
+            "id": "http://naplan.edu.au/StateProvinceId",
+            "type": "string",
+            "title": "StateProvinceId schema.",
+            "maxLength": 36,
+            "description": "An identifier which is applied state wide. Persistent Jurisdiction Student Identifier e.g. VSN for VIC; in this case, the Id may be only for the purposes of NAPLAN.",
+            "name": "StateProvinceId"
+        },
+        "StateTerritory": {
+            "id": "http://naplan.edu.au/StateTerritory",
+            "type": "string",
+            "title": "StateTerritory schema.",
+            "enum":["VIC","TAS","NSW","NT","QLD","WA","ACT","SA","XXX"],
+            "description": "Description",
+            "name": "StateTerritory"
+        },
+        "StudentLOTE": {
+            "id": "http://naplan.edu.au/StudentLOTE",
+            "type": "string",
+            "title": "StudentLOTE schema.",
+            "maxLength": 4,
+            "description": "Description",
+            "name": "StudentLOTE"
+        },
+        "TAAId": {
+            "id": "http://naplan.edu.au/TAAId",
+            "type": "string",
+            "title": "TAAId schema.",
+            "maxLength": 36,
+            "description": "An identifier assigned by and used by TAA for NAPLAN processing.",
+            "name": "TAAId"
+        },
+        "TestLevel": {
+            "id": "http://naplan.edu.au/TestLevel",
+            "type": "string",
+            "title": "TestLevel schema.",
+            "description": "Description",
+            "enum": ["3","5","7","9"],
+            "name": "TestLevel"
+        },
+        "VisaCode": {
+            "id": "http://naplan.edu.au/VisaCode",
+            "type": "string",
+            "title": "VisaCode schema.",
+            "description": "Description",
+            "maxLength": 4,
+            "name": "VisaCode"
+        },
+        "YearLevel": {
+            "id": "http://naplan.edu.au/YearLevel",
+            "type": "string",
+            "title": "YearLevel schema.",
+            "enum": ["P","0","1","2","3","4","5","6","7","8","9","10","11","12","UG"],
+            "description": "Description",
+            "name": "YearLevel"
+        }
+    },
+    "required": ["LocalId","FamilyName","GivenName","BirthDate","Sex","CountryOfBirth","FFPOS","IndigenousStatus","StudentLOTE","YearLevel","TestLevel","ASLSchoolId","Parent1SchoolEducation","Parent1NonSchoolEducation","Parent1Occupation","Parent1LOTE","Parent2SchoolEducation","Parent2NonSchoolEducation","Parent2Occupation","Parent2LOTE"]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
