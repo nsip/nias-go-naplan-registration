@@ -1,6 +1,8 @@
 #!/bin/bash
 
 echo "Building Mac binaries..."
+go get github.com/nats-io/gnatsd
+go build github.com/nats-io/gnatsd
 cd ./aggregator
 go get
 go build 
