@@ -3,15 +3,17 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"sync"
-        "runtime"
-        "path"
 
 	"github.com/kardianos/osext"
+
 	"github.com/labstack/echo"
-	mw "github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/middleware"
+
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
@@ -20,7 +22,7 @@ import (
 
 func main() {
 
-        _, currentFilePath, _, _ := runtime.Caller(0)
+	// _, currentFilePath, _, _ := runtime.Caller(0)
 
 	// set up nats broker connections
 	nc, con_error := nats.Connect(nats.DefaultURL)
@@ -90,59 +92,53 @@ func main() {
 	e := echo.New()
 
 	// Middleware
-	e.Use(mw.Logger())
-	e.Use(mw.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
 
-	// main javascript web client
-	e.ServeFile("/validation", path.Join(path.Join(path.Dir(currentFilePath), "public"), "validation.html"))
-
-	// support files
-	e.Static("/css/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "css"))
-	e.Static("/images/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "images"))
-	e.Static("/javascript/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "javascript"))
-	e.Static("/fileupload/", path.Join(path.Join(path.Dir(currentFilePath), "public"), "fileupload"))
+	e.Use(middleware.Static("public"))
+	e.File("/", "public/validation.html")
 
 	// Routes
 	// The endpoint to post input csv files to
-	e.Post("/naplan/reg/:stateID", func(c *echo.Context) error {
 
-		reader := csv.WithIoReader(c.Request().Body)
-		records, err := csv.ReadAll(reader)
-		log.Printf("records received: %v", len(records))
-		if err != nil {
-			return err
-		}
-		txID := nuid.Next()
-		ts := agg.TransactionSummary{txID, len(records)}
-		err = ec.Publish("validation.tx", ts)
-		if err != nil {
-			return err
-		}
-
-		for i, r := range records {
-
-			r := r.AsMap()
-			r["OriginalLine"] = strconv.Itoa(i + 1)
-			r["TxID"] = txID
-			// log.Printf("%+v\n\n", r)
-
-			err := ec.Publish("validation.naplan", r)
+	e.Post("/naplan/reg/:stateID", func (c echo.Context) error {
+			reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
+			records, err := csv.ReadAll(reader)
+			log.Printf("records received: %v", len(records))
 			if err != nil {
 				return err
 			}
-		}
-		log.Println("...all records converted & published for validation")
+			txID := nuid.Next()
+			ts := agg.TransactionSummary{txID, len(records)}
+			err = ec.Publish("validation.tx", ts)
+			if err != nil {
+				return err
+			}
 
-		return c.String(http.StatusOK, txID)
-	})
+			for i, r := range records {
 
-	// SSE endpoint that provides status/progress updates
-	e.Get("/statusfeed/:txID", func(c *echo.Context) error {
+				r := r.AsMap()
+				r["OriginalLine"] = strconv.Itoa(i + 1)
+				r["TxID"] = txID
+				// log.Printf("%+v\n\n", r)
 
-		txID := c.Param("txID")
+				err := ec.Publish("validation.naplan", r)
+				if err != nil {
+					return err
+				}
+			}
+			log.Println("...all records converted & published for validation")
+
+			return c.String(http.StatusOK, txID)
+	});
+
+	e.Get("/statusfeed/:txID", func (c echo.Context) error {
+
+		var mutex = &sync.Mutex{}
+		txID := c.QueryParam("txID")
 
 		c.Response().Header().Set(echo.ContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
@@ -168,16 +164,16 @@ func main() {
 			log.Println(err)
 		}
 
-		c.Response().Flush()
+		// c.Response().Flush()
 
 		return nil
 
-	})
+	});
 
 	// SSE endpoint to announce when all messages in a transaction have been processed
-	e.Get("/readyfeed/:txID", func(c *echo.Context) error {
+	e.Get("/readyfeed/:txID", func(c echo.Context) error {
 
-		txID := c.Param("txID")
+		txID := c.QueryParam("txID")
 
 		c.Response().Header().Set(echo.ContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
@@ -201,16 +197,16 @@ func main() {
 			log.Println(err)
 		}
 
-		c.Response().Flush()
+		// XXX c.Response().Flush()
 
 		return nil
 
 	})
 
 	// get the errors data for a given transaction
-	e.Get("/data/:txID", func(c *echo.Context) error {
+	e.Get("/data/:txID", func(c echo.Context) error {
 
-		txID := c.Param("txID")
+		txID := c.QueryParam("txID")
 
 		mutex.Lock()
 		data := dm[txID]
@@ -231,5 +227,5 @@ func main() {
 	log.Println("Starting aggregation-ui server...")
 	log.Println("Service is listening on localhost:1324")
 
-	e.Run(":1324")
+	e.Run(standard.New(":1324"))
 }
