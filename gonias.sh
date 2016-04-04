@@ -2,6 +2,12 @@
 # Change the directory as appropriate (go-nias)
 # gnatsd MUST be the first program launched
 
+if [ -f "nias.pid" ]
+then
+echo "There is a nias.pid file in place; run shutdown.sh"
+exit
+fi
+
 #rem Run the NIAS services. Add to the BOTTOM of this list
 # store each PID in pid list
 ../../nats-io/gnatsd/gnatsd & echo $! > nias.pid
@@ -11,7 +17,7 @@
 ./aslvalidator/aslvalidator & echo $! >> nias.pid
 ./idvalidator/idvalidator & echo $! >> nias.pid
 ./schemavalidator/schemavalidator & echo $! >> nias.pid
-./dobvalidator/dobvalidator & echo $! >> nias.pid
+./dobvalidator/dobvalidator -tstyr 2016 & echo $! >> nias.pid
 
 echo "Run the web client (launch browser here):"
 echo "http://localhost:1324/validation"

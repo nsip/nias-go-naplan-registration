@@ -14,6 +14,7 @@ import (
 	"time"
 
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
+        lib "github.com/nsip/nias-go-naplan-registration/lib"
 	"github.com/nats-io/nats"
 )
 
@@ -100,14 +101,10 @@ func main() {
 	log.Println("\n==========================================\n")
 
 	// establish connection to NATS server
-	nc, err := nats.Connect(*urls)
-	if err != nil {
-		log.Fatalf("cannot reach NATS server, service will abort: %v\n", err)
-	}
-	ec, _ := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+        natsconn := lib.NatsConn(*urls)
 
 	// listen on the subject channel for messages & pass for validation
-	_, err = nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
+	_, err = natsconn.Nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
 
 		dat := make(map[string]string)
 		if err := json.Unmarshal(msg.Data, &dat); err != nil {
@@ -119,7 +116,7 @@ func main() {
 
 		// update status reporting
 		pn := agg.ProcessingNotification{txID, *vtype}
-		ec.Publish("validation.status", pn)
+		natsconn.Ec.Publish("validation.status", pn)
 
 		t, err := time.Parse(layout, dat["BirthDate"])
 		// log.Println("Provided birth date is: ", t)
@@ -133,7 +130,7 @@ func main() {
 				TxID:         txID,
 				Vtype:        *vtype,
 			}
-			ec.Publish("validation.errors", msg)
+			natsconn.Ec.Publish("validation.errors", msg)
 
 		} else {
 
@@ -187,7 +184,7 @@ func main() {
 					TxID:         txID,
 					Vtype:        *vtype,
 				}
-				ec.Publish("validation.errors", msg)
+				natsconn.Ec.Publish("validation.errors", msg)
 			}
 
 		}
