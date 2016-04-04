@@ -104,7 +104,7 @@ func main() {
         natsconn := lib.NatsConn(*urls)
 
 	// listen on the subject channel for messages & pass for validation
-	_, err = natsconn.Nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
+	_, err := natsconn.Nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
 
 		dat := make(map[string]string)
 		if err := json.Unmarshal(msg.Data, &dat); err != nil {
