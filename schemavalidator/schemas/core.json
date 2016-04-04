@@ -173,7 +173,7 @@
             "type": "string",
             "title": "MainSchoolFlag schema.",
             "description": "Description",
-            "enum": ["Y","1","2","3"],
+            "enum": ["Y","N","01","02","03"],
             "name": "MainSchoolFlag"
         },
         "MiddleName": {
