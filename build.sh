@@ -1,6 +1,11 @@
 #!/bin/bash
 
 echo "Building Mac binaries..."
+go get github.com/nats-io/gnatsd
+# TODO - this will build in current directory change...
+cd ../../nats-io/gnatsd
+go build
+cd -
 cd ./aggregator
 go get
 go build 
