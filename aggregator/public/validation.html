@@ -35,6 +35,17 @@
     var txID = "unknown";
     var feedSource = new EventSource("/statusfeed/unknown");
     var readySource = new EventSource("/readyfeed/unknown");
+
+	function downloadTest(){
+		console.log("Clicked");
+		var a = document.body.appendChild(
+			document.createElement("a")
+		);
+		a.download = "results.json";
+		a.href = "data:text/html," + document.getElementById("result").innerHTML;
+		a.click();
+	}
+
     </script>
 </head>
 
@@ -57,6 +68,7 @@
                 <ul class="navbar-list">
                     <li class="navbar-item"><a class="navbar-link" href="#upload">Upload Files</a></li>
                     <li class="navbar-item"><a class="navbar-link" href="#analysis">Analysis</a></li>
+                    <li class="navbar-item"><a onclick="downloadTest();" class="navbar-link" href="#">Downlaod</a></li>
                     <!-- <li class="navbar-item"><a class="navbar-link" href="#graph">View</a></li> -->
                 </ul>
             </div>
@@ -151,7 +163,7 @@
                 </div>
                 <div class="six columns" style="margin-top: 5%">
                     <h6 class="docs-header">Validation Progress</h6>
-                    <div id="result"></div>
+                    <div id="result">XXX</div>
                     <script>
                     if (typeof(EventSource) !== "undefined") {
                         data = null;

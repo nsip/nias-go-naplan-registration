@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+	"os"
+	"path/filepath"
 
 	"github.com/kardianos/osext"
 
@@ -21,8 +23,8 @@ import (
 )
 
 func main() {
-
-	// _, currentFilePath, _, _ := runtime.Caller(0)
+	// XXX This only works if you run directly. You can't use "go run" 
+	currentFilePath, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 
 	// set up nats broker connections
 	nc, con_error := nats.Connect(nats.DefaultURL)
@@ -98,8 +100,8 @@ func main() {
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
 
-	e.Use(middleware.Static("public"))
-	e.File("/", "public/validation.html")
+	e.Use(middleware.Static(currentFilePath + "/public"))
+	e.File("/", currentFilePath + "/public/validation.html")
 
 	// Routes
 	// The endpoint to post input csv files to
