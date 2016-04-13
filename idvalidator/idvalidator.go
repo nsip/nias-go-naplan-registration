@@ -11,8 +11,7 @@ import (
 	"log"
 	"runtime"
 
-	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
-        lib "github.com/nsip/nias-go-naplan-registration/lib"
+	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
 	"github.com/nats-io/nats"
 )
 
@@ -30,7 +29,11 @@ func main() {
 	flag.Parse()
 
 	// establish connection to NATS server
-        natsconn := lib.NatsConn(*urls)
+	nc, err := nats.Connect(*urls)
+	if err != nil {
+		log.Fatalf("cannot reach NATS server, service will abort: %v\n", err)
+	}
+	ec, _ := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
 
 	// set up the data structures to be used
 	// simple duplicate check is, have we seen this userid for this school before
@@ -53,7 +56,7 @@ func main() {
 	dcomplex := make(map[string]map[extendedkey]string)
 
 	// listen on the subject channel for messages & pass for validation
-	_, err := natsconn.Nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
+	_, err = nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
 
 		dat := make(map[string]string)
 		if err := json.Unmarshal(msg.Data, &dat); err != nil {
@@ -64,7 +67,7 @@ func main() {
 		txID := dat["TxID"]
 
 		pn := agg.ProcessingNotification{txID, *vtype}
-		natsconn.Ec.Publish("validation.status", pn)
+		ec.Publish("validation.status", pn)
 
 		k := simplekey{
 			LocalId:     dat["LocalId"],
@@ -94,7 +97,7 @@ func main() {
 				TxID:         txID,
 				Vtype:        *vtype,
 			}
-			natsconn.Ec.Publish("validation.errors", msg)
+			ec.Publish("validation.errors", msg)
 		}
 
 		// more complex match
@@ -130,7 +133,7 @@ func main() {
 				TxID:         txID,
 				Vtype:        *vtype,
 			}
-			natsconn.Ec.Publish("validation.errors", msg)
+			ec.Publish("validation.errors", msg)
 		}
 
 	})

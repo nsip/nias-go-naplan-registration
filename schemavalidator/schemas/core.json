@@ -173,7 +173,7 @@
             "type": "string",
             "title": "MainSchoolFlag schema.",
             "description": "Description",
-            "enum": ["Y","N","01","02","03"],
+            "enum": ["Y","1","01","2","02","3","03"],
             "name": "MainSchoolFlag"
         },
         "MiddleName": {
@@ -213,7 +213,8 @@
             "type": "string",
             "title": "OtherSchoolId schema.",
             "description": "Description",
-            "maxLength": 36,            
+            "maxLength": 10,
+            "minLength": 5,                        
             "name": "OtherSchoolId"
         },
         "Parent1LOTE": {
@@ -380,7 +381,8 @@
             "type": "string",
             "title": "ReportingSchoolId schema.",
             "description": "Description",
-            "maxLength": 36,            
+            "maxLength": 10,  
+            "minLength": 5,          
             "name": "ReportingSchoolId"
         },
         "SchoolLocalId": {

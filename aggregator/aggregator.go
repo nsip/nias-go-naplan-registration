@@ -1,30 +1,24 @@
 package main
 
 import (
+	gcsv "encoding/csv"
 	"encoding/json"
 	"log"
-	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
-	"os"
-	"path/filepath"
 
 	"github.com/kardianos/osext"
-
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
-	"github.com/labstack/echo/middleware"
-
-	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
+	mw "github.com/labstack/echo/middleware"
+	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
 	"github.com/wildducktheories/go-csv"
 )
 
 func main() {
-	// XXX This only works if you run directly. You can't use "go run" 
-	currentFilePath, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 
 	// set up nats broker connections
 	nc, con_error := nats.Connect(nats.DefaultURL)
@@ -94,53 +88,50 @@ func main() {
 	e := echo.New()
 
 	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	e.Use(mw.Logger())
+	e.Use(mw.Recover())
 
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
 
-	e.Use(middleware.Static(currentFilePath + "/public"))
-	e.File("/", currentFilePath + "/public/validation.html")
-
 	// Routes
 	// The endpoint to post input csv files to
+	e.Post("/naplan/reg/:stateID", func(c *echo.Context) error {
 
-	e.Post("/naplan/reg/:stateID", func (c echo.Context) error {
-			reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
-			records, err := csv.ReadAll(reader)
-			log.Printf("records received: %v", len(records))
+		reader := csv.WithIoReader(c.Request().Body)
+		records, err := csv.ReadAll(reader)
+		log.Printf("records received: %v", len(records))
+		if err != nil {
+			return err
+		}
+		txID := nuid.Next()
+		ts := agg.TransactionSummary{txID, len(records)}
+		err = ec.Publish("validation.tx", ts)
+		if err != nil {
+			return err
+		}
+
+		for i, r := range records {
+
+			r := r.AsMap()
+			r["OriginalLine"] = strconv.Itoa(i + 1)
+			r["TxID"] = txID
+			// log.Printf("%+v\n\n", r)
+
+			err := ec.Publish("validation.naplan", r)
 			if err != nil {
 				return err
 			}
-			txID := nuid.Next()
-			ts := agg.TransactionSummary{txID, len(records)}
-			err = ec.Publish("validation.tx", ts)
-			if err != nil {
-				return err
-			}
+		}
+		log.Println("...all records converted & published for validation")
 
-			for i, r := range records {
+		return c.String(http.StatusOK, txID)
+	})
 
-				r := r.AsMap()
-				r["OriginalLine"] = strconv.Itoa(i + 1)
-				r["TxID"] = txID
-				// log.Printf("%+v\n\n", r)
+	// SSE endpoint that provides status/progress updates
+	e.Get("/statusfeed/:txID", func(c *echo.Context) error {
 
-				err := ec.Publish("validation.naplan", r)
-				if err != nil {
-					return err
-				}
-			}
-			log.Println("...all records converted & published for validation")
-
-			return c.String(http.StatusOK, txID)
-	});
-
-	e.Get("/statusfeed/:txID", func (c echo.Context) error {
-
-		var mutex = &sync.Mutex{}
-		txID := c.QueryParam("txID")
+		txID := c.Param("txID")
 
 		c.Response().Header().Set(echo.ContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
@@ -166,16 +157,16 @@ func main() {
 			log.Println(err)
 		}
 
-		// c.Response().Flush()
+		c.Response().Flush()
 
 		return nil
 
-	});
+	})
 
 	// SSE endpoint to announce when all messages in a transaction have been processed
-	e.Get("/readyfeed/:txID", func(c echo.Context) error {
+	e.Get("/readyfeed/:txID", func(c *echo.Context) error {
 
-		txID := c.QueryParam("txID")
+		txID := c.Param("txID")
 
 		c.Response().Header().Set(echo.ContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
@@ -199,16 +190,16 @@ func main() {
 			log.Println(err)
 		}
 
-		// XXX c.Response().Flush()
+		c.Response().Flush()
 
 		return nil
 
 	})
 
 	// get the errors data for a given transaction
-	e.Get("/data/:txID", func(c echo.Context) error {
+	e.Get("/data/:txID", func(c *echo.Context) error {
 
-		txID := c.QueryParam("txID")
+		txID := c.Param("txID")
 
 		mutex.Lock()
 		data := dm[txID]
@@ -217,17 +208,71 @@ func main() {
 		err := c.JSON(http.StatusOK, data)
 
 		// data is only served once, so delete once provided
-		mutex.Lock()
-		delete(dm, txID)
-		mutex.Unlock()
+		// mutex.Lock()
+		// delete(dm, txID)
+		// mutex.Unlock()
 
 		return err
 
 	})
 
+	// get the errors data for a given transaction as a downloadable csv file
+	e.Get("/report/:txID/:fname", func(c *echo.Context) error {
+
+		txID := c.Param("txID")
+
+		mutex.Lock()
+		data := dm[txID]
+		mutex.Unlock()
+
+		// get filename from params
+		fname := c.Param("fname")
+		rplcr := strings.NewReplacer(".csv", "_error_report.csv")
+		rfname := rplcr.Replace(fname)
+
+		c.Response().Header().Set("Content-Disposition", "attachment; filename="+rfname)
+		c.Response().Header().Set("Content-Type", "text/csv")
+
+		w := gcsv.NewWriter(c.Response().Writer())
+
+		// write the headers
+		hdr := []string{"Original File Line No. where error occurred",
+			"Validation Type",
+			"Field that failed vaidation",
+			"Error Description"}
+
+		if err := w.Write(hdr); err != nil {
+			log.Println("error writing headers to csv:", err)
+		}
+
+		for _, r := range data {
+
+			if err := w.Write(r.ToSlice()); err != nil {
+				log.Println("error writing record to csv:", err)
+			}
+		}
+
+		w.Flush()
+
+		if err := w.Error(); err != nil {
+			log.Println("Error constructing csv report:", err)
+			return err
+		}
+
+		// err := c.JSON(http.StatusOK, data)
+
+		// data is only served once, so delete once provided
+		// mutex.Lock()
+		// delete(dm, txID)
+		// mutex.Unlock()
+
+		return nil
+
+	})
+
 	// Start server
-	log.Println("Starting aggregation-ui server...")
+	log.Println("Starting aggregation-ui services...")
 	log.Println("Service is listening on localhost:1324")
 
-	e.Run(standard.New(":1324"))
+	e.Run(":1324")
 }

@@ -1,25 +1,19 @@
 #!/bin/bash
 
 echo "Building Mac binaries..."
-go get github.com/nats-io/gnatsd
-# TODO - this will build in current directory change...
-cd ../../nats-io/gnatsd
-go build
-cd -
 cd ./aggregator
-go get
 go build 
 cd ../aslvalidator
-go get
 go build
 cd ../dobvalidator
-go get
 go build
 cd ../idvalidator
-go get
 go build
 cd ../schemavalidator
-go get
+go build
+cd ../csvxmlconverter
+go build
+cd ../webui
 go build
 echo "...all Mac binaries built..."
 cd ..
@@ -34,5 +28,31 @@ cd ../idvalidator
 GOOS=windows GOARCH=amd64 go build
 cd ../schemavalidator
 GOOS=windows GOARCH=amd64 go build
-echo "...all Windows binaries built..."
+cd ../csvxmlconverter
+GOOS=windows GOARCH=amd64 go build
+cd ../webui
+GOOS=windows GOARCH=amd64 go build
+echo "...all Windows64 binaries built..."
+cd ..
+echo "Building Windows32 binaries..."
+cd ./aggregator
+GOOS=windows GOARCH=386 go build -o aggregator32.exe
+cd ../aslvalidator
+GOOS=windows GOARCH=386 go build -o aslvalidator32.exe 
+cd ../dobvalidator
+GOOS=windows GOARCH=386 go build -o dobvalidator32.exe
+cd ../idvalidator
+GOOS=windows GOARCH=386 go build -o idvalidator32.exe
+cd ../schemavalidator
+GOOS=windows GOARCH=386 go build -o schemavalidator32.exe
+cd ../csvxmlconverter
+GOOS=windows GOARCH=386 go build -o csvxmlconverter32.exe
+cd ../webui
+GOOS=windows GOARCH=386 go build -o webui32.exe
+echo "...all Windows32 binaries built..."
 echo "go-nias Build Complete."
+
+
+
+
+

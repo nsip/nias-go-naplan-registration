@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/dc.min.css">
+    <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="images/favicon2.png">
+    <!-- jquery support -->
+    <script src="javascript/jquery-2.1.4.min.js"></script>
+    <!-- navbar etc. -->
+    <script src="javascript/site.js"></script>
+    <!-- charting support -->
+    <script src="javascript/d3.min.js" charset="utf-8"></script>
+    <script src="javascript/dimple.v2.1.6.min.js"></script>
+    <script src="javascript/crossfilter.min.js"></script>
+    <script src="javascript/dc.min.js"></script>
+    <!-- application specific js -->
+    <script src="javascript/nias.js"></script>
+    <!-- help to maintain sections is user prints -->
+    <style type='text/css'>
+    p.pagebreakhere {
+        page-break-before: always
+    }
+    </style>
+    <title>NIAS Naplan Validation</title>
+</head>
+
+<body>
+    <div class="container">
+        <section class="header">
+            <img class="value-img" src="images/search.svg" width="132" height="132">
+            <div class="row">
+                <div class="twelve columns" style="margin-top: 5%">
+                    <h4>NIAS - Naplan Validation</h4>
+                    <p>Local NAPLAN Registration Pre-Validation Tool</p>
+                    </br>
+                </div>
+            </div>
+        </section>
+        <!-- navigation -->
+        <div class="navbar-spacer"></div>
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a class="navbar-link" href="#upload">Validate Files</a></li>
+                    <li class="navbar-item"><a class="navbar-link" href="#analysis">Validation Analysis</a></li>
+                    <li class="navbar-item"><a class="navbar-link" href="#convert">Convert Files</a></li>
+                    <!-- <li class="navbar-item"><a class="navbar-link" href="#graph">View</a></li> -->
+                </ul>
+            </div>
+        </nav>
+        <div class="docs-section" id="upload">
+            <div class="row">
+                <div class="twelve columns">
+                    <p>
+                        Select a csv file containing student registrations data with the file chooser on the left. The file will be uploaded and processed by all validation engines simultaneously. The graph on the right will show the progress of the validations. Once all validations have completed click on the 'Fetch Results' buttn to show the validation analysis.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns" style="margin-top: 5%">
+                    <h6 class="docs-header">Input File</h6>
+                    <input type="file" id="fileInput">
+                    <div id="uploadresult"></div>
+                    <progress value="1" max="100" id="upload-progress"></progress>
+                </div>
+                <div class="six columns" style="margin-top: 5%">
+                    <h6 class="docs-header">Validation Progress</h6>
+                    <div id="result"></div>
+                    <script>
+                    // check the user can handle SSE, and create a placeholder for the progress chart
+                    if (typeof(EventSource) !== "undefined") {
+                        data = null;
+                        var svg = dimple.newSvg("#result", 400, 200);
+                        var chart = new dimple.chart(svg, data);
+                        chart.addCategoryAxis("y", "v_type");
+                        chart.addMeasureAxis("x", "count");
+                        chart.addSeries(null, dimple.plot.bar);
+                        chart.draw();
+                    } else {
+                        document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+                    }
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <button id="fetch" class="button-primary">Review Results</button>
+                    <script>
+                    $("#fetch").click(function(e) {
+                        // var url = "/validate/report/" + txID;
+                        // e.preventDefault(); //stop the browser from following
+                        // window.location.href = url;
+                        renderAnalysis(txID);
+                        // shut down the polling until the next file is loaded
+                        feedSource.close();
+                        readySource.close();
+                    });
+                    </script>
+                    <button id="fetch2" class="button">Download Error Report</button>
+                    <script>
+                    $("#fetch2").click(function(e) {
+                        var thefile = document.getElementById('fileInput');
+                        var fname  = thefile.value
+                        fname = fname.replace(/.*[\/\\]/, '');
+                        var url = "/validate/report/" + txID + "/" + fname;
+                        // e.preventDefault(); //stop the browser from following
+                        window.location.href = url;
+                    });
+                    </script>                        
+                </div>
+            </div>
+            <div class="docs-section" id="analysis">
+                <div class="row">
+                    <div class="twelve columns">
+                        <p>
+                            The graph on the left is a schematic of your uploaded file, showing the location of validation errors within the file. Click and Drag to create a moveable window to analyse smaller groups of results if many validation errors are returned. The selected dataset is shown in the table below.
+                        </p>
+                        <p>
+                            The graph on the left shows the types of validation errors found in the submitted file. Click on horizontal bars to see errors of a particular type in the table below.
+                        </p>
+                        <p>
+                            The table will update automatically based on selections made in the graphs. The table will show the first 100 items that match the graph filters.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns" style="margin-top: 5%">
+                        <h6 class="docs-header">Validation Analysis Results</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="six columns" style="margin-top: 5%">
+                        <div id="errors-chart">
+                            <strong>Validation Errors by Record Order</strong>
+                            <span class="reset" style="display: none;"></span>
+                            <a class="reset" href="javascript:dc.filterAll(); dc.renderAll();" style="display: none;">reset</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="six columns" style="margin-top: 5%">
+                        <div id="errors-by-type-chart">
+                            <strong>Errors By Validaiton Type</strong>
+                            <a class="reset" href="javascript:dc.filterAll(); dc.renderAll();" style="display: none;">reset</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns" style="margin-top: 5%">
+                        <div class="dc-data-count">
+                            <span class="filter-count"></span> selected out of <span class="total-count"></span> records | <a href="javascript:dc.filterAll(); dc.renderAll();">reset</a>
+                        </div>
+                    </div>
+                    <div class="twelve columns" style="margin-top: 5%">
+                        <table class="table table-hover dc-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Original Line No.</th>
+                                    <th>Error Type</th>
+                                    <th>Error Field</th>
+                                    <th>Error Description</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="docs-section" id="convert">
+                    <div class="row">
+                        <div class="twelve columns">
+                            <p>
+                                Once you are happy with the level of validation, you can convert csv files to SIF XML format. Select the file, click the 'Convert to XML' button, and the converted file will be returned to you with an .xml extension. You can convert files as many times as you require.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="six columns" style="margin-top: 5%">
+                            <h6 class="docs-header">Convert CSV to XML</h6>
+                            <div id="result"></div>
+                            <form action="/convert/convert" method="post" enctype="multipart/form-data" id="convForm">
+                                <label for="file">Filename:</label>
+                                <input type="file" name="file" id="file">
+                                </br>
+                                </br>
+                                </br>
+                                <input type="submit" name="submit" value="Convert to XML" class="button-primary">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- container -->
+</body>
+
+</html>

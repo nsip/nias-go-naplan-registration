@@ -10,33 +10,12 @@ import (
 	"io/ioutil"
 	"log"
 	"runtime"
-	"path"
 
 	"github.com/kardianos/osext"
-	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
-        lib "github.com/nsip/nias-go-naplan-registration/lib"
+	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/xeipuuv/gojsonschema"
 )
-
-func getSchema(currentFilePath string, jsonSchema string) (*gojsonschema.Schema) {
-        // load the validation schema once for efficiency
-        loadSchema := func() *gojsonschema.Schema {
-
-                s, readerr := ioutil.ReadFile(path.Join(path.Join(path.Dir(currentFilePath),  "schemas") , jsonSchema))
-                if readerr != nil {
-                        log.Fatalf("Unable to open schema file, service aborting...")
-                }
-                schemaLoader := gojsonschema.NewStringLoader(string(s))
-                schema, err := gojsonschema.NewSchema(schemaLoader)
-                if err != nil {
-                        panic("schema load error in startup - \n\n" + err.Error() + "\n...service aborting.")
-                } 
-                log.Println("loaded schema - schemas/" + jsonSchema)
-                return schema
-        }               
-	return loadSchema()
-}
 
 func main() {
 	// handle command-line config options
@@ -50,17 +29,21 @@ func main() {
 
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
-	_, currentFilePath, _, _ := runtime.Caller(0)
+
 	log.SetFlags(0)
 	flag.Parse()
 
-	schema := getSchema(currentFilePath, *jsonSchema)
-        natsconn := lib.NatsConn(*urls)
-/*
+	// establish connection to NATS server
+	nc, err := nats.Connect(*urls)
+	if err != nil {
+		log.Fatalf("cannot reach NATS server, service will abort: %v\n", err)
+	}
+	ec, _ := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+
 	// load the validation schema once for efficiency
 	loadSchema := func() *gojsonschema.Schema {
 
-		s, readerr := ioutil.ReadFile(path.Join(path.Join(path.Dir(currentFilePath),  "schemas") , *jsonSchema))
+		s, readerr := ioutil.ReadFile("schemas/" + *jsonSchema)
 		if readerr != nil {
 			log.Fatalf("Unable to open schema file, service aborting...")
 		}
@@ -73,10 +56,9 @@ func main() {
 		return schema
 	}
 	schema := loadSchema()
-*/
 
 	// listen on the subject channel for messages & pass for validation
-	_, err := natsconn.Nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
+	_, err = nc.QueueSubscribe(*topic+"."+*state, *qGroup, func(msg *nats.Msg) {
 
 		dat := make(map[string]string)
 		if err := json.Unmarshal(msg.Data, &dat); err != nil {
@@ -85,7 +67,7 @@ func main() {
 		// log.Println(dat)
 
 		pn := agg.ProcessingNotification{dat["TxID"], *vtype}
-		natsconn.Ec.Publish("validation.status", pn)
+		ec.Publish("validation.status", pn)
 
 		payloadLoader := gojsonschema.NewStringLoader(string(msg.Data))
 
@@ -106,7 +88,7 @@ func main() {
 					Vtype:        *vtype,
 				}
 
-				natsconn.Ec.Publish("validation.errors", msg)
+				ec.Publish("validation.errors", msg)
 
 			}
 		}

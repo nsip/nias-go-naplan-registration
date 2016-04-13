@@ -21,9 +21,3 @@ type TransactionSummary struct {
 	TxID        string
 	RecordCount int
 }
-
-// helper method for writing out csv encoding of error reports
-func (ve *ValidationError) ToSlice() []string {
-
-	return []string{ve.OriginalLine, ve.Vtype, ve.Field, ve.Description}
-}
