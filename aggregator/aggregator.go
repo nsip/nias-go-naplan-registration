@@ -12,7 +12,7 @@ import (
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-	agg "github.com/matt-farmer/nias-go/naplan/registration/aggregator/lib"
+	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
 	"github.com/wildducktheories/go-csv"
@@ -274,5 +274,6 @@ func main() {
 	log.Println("Starting aggregation-ui services...")
 	log.Println("Service is listening on localhost:1324")
 
-	e.Run(":1324")
+	e.Run(standard.New(":1324"))
+
 }
