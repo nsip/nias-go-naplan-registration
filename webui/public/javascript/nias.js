@@ -21,7 +21,8 @@
             var textType = /text.*/;
             var textTypeMS = /application.*excel/;
 
-            if (file.type.match(textType) || file.type.match(textTypeMS)) {
+			// Temporary remove mimetype - not supported on some Windows Browsers
+            // if (file.type.match(textType) || file.type.match(textTypeMS)) {
                 var reader = new FileReader();
                 var progressNode = document.getElementById("upload-progress");
 
@@ -77,9 +78,9 @@
 
                 // reader.readAsText(file);    
                 reader.readAsBinaryString(file);
-            } else {
-                document.getElementById("uploadresult").innerHTML = "File Type Not Supported";
-            }
+            // } else {
+            //     document.getElementById("uploadresult").innerHTML = "File Type Not Supported";
+            // }
         });
     }
 
