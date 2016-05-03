@@ -13,11 +13,13 @@ fi
 ../../nats-io/gnatsd/gnatsd & echo $! > nias.pid
 
 
-./aggregator/aggregator & echo $! >> nias.pid
+(cd aggregator; ./aggregator & echo $! >> ../nias.pid)
 ./aslvalidator/aslvalidator & echo $! >> nias.pid
 ./idvalidator/idvalidator & echo $! >> nias.pid
-./schemavalidator/schemavalidator & echo $! >> nias.pid
+(cd schemavalidator; ./schemavalidator & echo $! >> ../nias.pid)
+(cd csvxmlconverter; ./csvxmlconverter & echo $! >> ../nias.pid)
 ./dobvalidator/dobvalidator -tstyr 2016 & echo $! >> nias.pid
+(cd webui; ./webui & echo $! >> ../nias.pid)
 
 echo "Run the web client (launch browser here):"
 echo "http://localhost:1324/validation"
