@@ -12,8 +12,8 @@ import (
 	"os"
 	"runtime"
 
-	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
+	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/wildducktheories/go-csv"
 )
 
@@ -90,7 +90,8 @@ func main() {
 			}
 			ec.Publish("validation.errors", msg)
 		} else {
-			if st.State != dat["StateTerritory"] {
+			// if st.State != dat["StateTerritory"] {
+			if st.State != dat["StateTerritory"] && dat["StateTerritory"] != "" {
 				desc := "ASL ID " + dat["ASLSchoolId"] + " is as valid ID, but not for " + dat["StateTerritory"]
 				msg := agg.ValidationError{
 					Description:  desc,
