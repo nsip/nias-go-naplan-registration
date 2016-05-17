@@ -12,14 +12,37 @@ fi
 # store each PID in pid list
 ../../nats-io/gnatsd/gnatsd & echo $! > nias.pid
 
+# give the nats server time to come up
+sleep 2
 
-./aggregator/aggregator & echo $! >> nias.pid
-./aslvalidator/aslvalidator & echo $! >> nias.pid
-./idvalidator/idvalidator & echo $! >> nias.pid
-./schemavalidator/schemavalidator & echo $! >> nias.pid
-./dobvalidator/dobvalidator -tstyr 2016 & echo $! >> nias.pid
-./csvxmlconverter/csvxmlconverter & echo $! >> nias.pid
-./webui/webui & echo $! >> nias.pid
+cd ./aggregator
+./aggregator & echo $! >> ../nias.pid
+cd ..
+
+
+cd ./aslvalidator
+./aslvalidator & echo $! >> ../nias.pid
+cd ..
+
+cd ./idvalidator
+./idvalidator & echo $! >> ../nias.pid
+cd ..
+
+cd ./schemavalidator
+./schemavalidator & echo $! >> ../nias.pid
+cd ..
+
+cd ./dobvalidator
+./dobvalidator -tstyr 2016 & echo $! >> ../nias.pid
+cd ..
+
+cd ./csvxmlconverter
+./csvxmlconverter & echo $! >> ../nias.pid
+cd ..
+
+cd ./webui
+./webui & echo $! >> ../nias.pid
+cd ..
 
 echo "Run the web client (launch browser here):"
 echo "http://localhost:8080/nias"
