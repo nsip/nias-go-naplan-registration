@@ -18,7 +18,9 @@ fi
 ./idvalidator/idvalidator & echo $! >> nias.pid
 ./schemavalidator/schemavalidator & echo $! >> nias.pid
 ./dobvalidator/dobvalidator -tstyr 2016 & echo $! >> nias.pid
+./csvxmlconverter/csvxmlconverter & echo $! >> nias.pid
+./webui/webui & echo $! >> nias.pid
 
 echo "Run the web client (launch browser here):"
-echo "http://localhost:1324/validation"
+echo "http://localhost:8080/nias"
 
