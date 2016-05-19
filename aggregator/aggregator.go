@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"io/ioutil"
+	"github.com/labstack/echo/engine/standard"
 
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
@@ -113,9 +115,9 @@ func main() {
 
 	// Routes
 	// The endpoint to post input csv files to
-	e.Post("/naplan/reg/:stateID", func(c *echo.Context) error {
+	e.Post("/naplan/reg/:stateID", func(c echo.Context) error {
+		reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
 
-		reader := csv.WithIoReader(c.Request().Body)
 		records, err := csv.ReadAll(reader)
 		log.Printf("records received: %v", len(records))
 		if err != nil {
@@ -146,11 +148,11 @@ func main() {
 	})
 
 	// SSE endpoint that provides status/progress updates
-	e.Get("/statusfeed/:txID", func(c *echo.Context) error {
+	e.Get("/statusfeed/:txID", func(c echo.Context) error {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -174,18 +176,18 @@ func main() {
 			log.Println(err)
 		}
 
-		c.Response().Flush()
+		// c.Response().Flush()
 
 		return nil
 
 	})
 
 	// SSE endpoint to announce when all messages in a transaction have been processed
-	e.Get("/readyfeed/:txID", func(c *echo.Context) error {
+	e.Get("/readyfeed/:txID", func(c echo.Context) error {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -207,14 +209,14 @@ func main() {
 			log.Println(err)
 		}
 
-		c.Response().Flush()
+		// c.Response().Flush()
 
 		return nil
 
 	})
 
 	// get the errors data for a given transaction
-	e.Get("/data/:txID", func(c *echo.Context) error {
+	e.Get("/data/:txID", func(c echo.Context) error {
 
 		txID := c.Param("txID")
 
@@ -234,7 +236,7 @@ func main() {
 	})
 
 	// get the errors data for a given transaction as a downloadable csv file
-	e.Get("/report/:txID/:fname", func(c *echo.Context) error {
+	e.Get("/report/:txID/:fname", func(c echo.Context) error {
 
 		txID := c.Param("txID")
 
@@ -291,5 +293,5 @@ func main() {
 	log.Println("Starting aggregation-ui services...")
 	log.Println("Service is listening on localhost:1324")
 
-	e.Run(":1324")
+	e.Run(standard.New(":1324"))
 }
