@@ -28,4 +28,6 @@ aslvalidator/aslvalidator
 dobvalidator/dobvalidator
 idvalidator/idvalidator
 schemavalidator/schemavalidator
+csvxmlconverter/csvxmlconverter
+webui/webui
 nias.pid

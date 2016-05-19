@@ -50,7 +50,7 @@ func main() {
 	http_serv := &http.Server{
 		Addr:        server_configs["http_port"],
 		Handler:     mux,
-		ReadTimeout: 30 * time.Second, // helps kill ghost Goroutines:
+		ReadTimeout: 90 * time.Second, // helps kill ghost Goroutines:
 		// http://stackoverflow.com/questions/10971800/golang-http-server-leaving-open-goroutines
 		//ErrorLog:   nil, // suppresses errors from stderr
 	}

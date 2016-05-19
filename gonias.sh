@@ -12,6 +12,8 @@ fi
 # store each PID in pid list
 ../../nats-io/gnatsd/gnatsd & echo $! > nias.pid
 
+# give the nats server time to come up
+sleep 2
 
 (cd aggregator; ./aggregator & echo $! >> ../nias.pid)
 ./aslvalidator/aslvalidator & echo $! >> nias.pid
@@ -22,5 +24,5 @@ fi
 (cd webui; ./webui & echo $! >> ../nias.pid)
 
 echo "Run the web client (launch browser here):"
-echo "http://localhost:1324/validation"
+echo "http://localhost:8080/nias"
 

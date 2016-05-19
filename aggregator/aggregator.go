@@ -9,16 +9,33 @@ import (
 	"strings"
 	"sync"
 	"io/ioutil"
+	"github.com/labstack/echo/engine/standard"
 
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	mw "github.com/labstack/echo/middleware"
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
+
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
 	"github.com/wildducktheories/go-csv"
 )
+
+// truncate the record by removing items that have blank entries.
+// this prevents the validation from throwing validation exceptions
+// for fields that are not mandatory but included as empty in the
+// dataset
+func removeBlanks(m map[string]string) map[string]string {
+
+	reducedmap := make(map[string]string)
+	for key, val := range m {
+		if val != "" {
+			reducedmap[key] = val
+		}
+	}
+
+	return reducedmap
+}
 
 func main() {
 
@@ -99,7 +116,6 @@ func main() {
 	// Routes
 	// The endpoint to post input csv files to
 	e.Post("/naplan/reg/:stateID", func(c echo.Context) error {
-
 		reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
 
 		records, err := csv.ReadAll(reader)
@@ -116,7 +132,7 @@ func main() {
 
 		for i, r := range records {
 
-			r := r.AsMap()
+			r := removeBlanks(r.AsMap())
 			r["OriginalLine"] = strconv.Itoa(i + 1)
 			r["TxID"] = txID
 			// log.Printf("%+v\n\n", r)
@@ -136,7 +152,7 @@ func main() {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -171,7 +187,7 @@ func main() {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -278,5 +294,4 @@ func main() {
 	log.Println("Service is listening on localhost:1324")
 
 	e.Run(standard.New(":1324"))
-
 }
