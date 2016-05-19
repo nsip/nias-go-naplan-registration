@@ -8,6 +8,11 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+<<<<<<< HEAD
+=======
+	"io/ioutil"
+	"github.com/labstack/echo/engine/standard"
+>>>>>>> master
 
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
@@ -113,7 +118,12 @@ func main() {
 
 	// Routes
 	// The endpoint to post input csv files to
+<<<<<<< HEAD
 	e.Post("/naplan/reg/:stateID", func(c *echo.Context) error {
+=======
+	e.Post("/naplan/reg/:stateID", func(c echo.Context) error {
+		reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
+>>>>>>> master
 
 		reader := csv.WithIoReader(c.Request().Body)
 		records, err := csv.ReadAll(reader)
@@ -150,7 +160,7 @@ func main() {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -185,7 +195,7 @@ func main() {
 
 		txID := c.Param("txID")
 
-		c.Response().Header().Set(echo.ContentType, "text/event-stream")
+		c.Response().Header().Set(echo.HeaderContentType, "text/event-stream")
 		c.Response().WriteHeader(http.StatusOK)
 
 		mutex.Lock()
@@ -291,5 +301,9 @@ func main() {
 	log.Println("Starting aggregation-ui services...")
 	log.Println("Service is listening on localhost:1324")
 
+<<<<<<< HEAD
 	e.Run(":1324")
+=======
+	e.Run(standard.New(":1324"))
+>>>>>>> master
 }
