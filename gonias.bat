@@ -14,6 +14,8 @@ start aslvalidator
 start idvalidator
 start schemavalidator
 start dobvalidator
+start csvxmlconverter
+start webui
 
 rem Run the web client (launch browser here)
-start http://localhost:1324/validation
+start http://localhost:8080/nias
