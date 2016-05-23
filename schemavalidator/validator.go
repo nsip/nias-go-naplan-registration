@@ -12,8 +12,8 @@ import (
 	"runtime"
 
 	"github.com/kardianos/osext"
-	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/nats-io/nats"
+	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
 	"github.com/xeipuuv/gojsonschema"
 )
 
@@ -79,6 +79,20 @@ func main() {
 		if !result.Valid() {
 
 			for _, desc := range result.Errors() {
+
+				// trap enum errors for large enums such as country code
+				// and truncate the message to prevent unwieldy message
+				if desc.Type() == "enum" {
+					switch desc.Field() {
+					case "CountryOfBirth":
+						desc.SetDescription("Country Code is not one of SACC 1269.0 codeset")
+					case "Parent1LOTE", "Parent2LOTE", "StudentLOTE":
+						desc.SetDescription("Language Code is not one of ASCL 1267.0 codeset")
+					case "VisaCode":
+						desc.SetDescription("Visa Code is not one of known values from http://www.immi.gov.au")
+					}
+
+				}
 
 				msg := agg.ValidationError{
 					Description:  desc.Description(),
