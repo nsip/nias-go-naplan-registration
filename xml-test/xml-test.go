@@ -10,7 +10,7 @@ import (
 var inputFile = flag.String("infile", "5000students.xml", "Input file path")
 
 func main() {
-	fmt.Println("Hello world")
+	fmt.Println("Hello world - testing XML Parser")
 
 	flag.Parse()
 
@@ -21,6 +21,11 @@ func main() {
 	}
 	defer xmlFile.Close()
 
-	xml.XmlParse(xmlFile)
+	records := xml.XmlParse(xmlFile)
+	for i, r := range records {
+		// r := removeBlanks(r.AsMap())
+		fmt.Println(i);
+		fmt.Println(r.GivenName);
+	}
 }
 

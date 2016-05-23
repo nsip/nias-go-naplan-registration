@@ -4,12 +4,13 @@ package xml
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"encoding/xml"
 	"encoding/json"
 )
 
-var OUTPUT = true;
+var OUTPUT = false;
 
 // XXX add elements
 // XXX Transaction ID and Sequence ID (see CSV)
@@ -36,7 +37,7 @@ type student struct {
 //	- Type (Struct ?)
 //	- Queue (for adding to nats)
 //	- automatic detect
-func XmlParse(xmlFile *os.File) {
+func XmlParse(xmlFile io.Reader) (records []student) {
 	// XML Encoder
 	x_enc := xml.NewEncoder(os.Stdout)
 	x_enc.Indent("  ", "    ")
@@ -72,6 +73,8 @@ func XmlParse(xmlFile *os.File) {
 					j_enc.Encode(p)
 				}
 
+				records = append(records, p);
+
 				total++
 			}
 		default:
@@ -80,5 +83,7 @@ func XmlParse(xmlFile *os.File) {
 	}
 
 	fmt.Printf("Total articles: %d \n", total)
+
+	return(records)
 }
 

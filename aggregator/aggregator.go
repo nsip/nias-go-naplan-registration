@@ -2,6 +2,7 @@ package main
 
 import (
 	gcsv "encoding/csv"
+	"fmt"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -15,6 +16,7 @@ import (
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
 	agg "github.com/nsip/nias-go-naplan-registration/aggregator/lib"
+	xml "github.com/nsip/nias-go-naplan-registration/xml"
 
 	"github.com/nats-io/nats"
 	"github.com/nats-io/nuid"
@@ -113,36 +115,63 @@ func main() {
 	exeDir, _ := osext.ExecutableFolder()
 	log.Println(exeDir)
 
-	// Routes
+	// Routes - CSV / XML
 	// The endpoint to post input csv files to
-	e.Post("/naplan/reg/:stateID", func(c echo.Context) error {
-		reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
+	e.Post("/naplan/reg/:fileName", func(c echo.Context) error {
+		fileName := strings.ToLower(c.Param("fileName"))
+		log.Println(fileName)
+		log.Println(fileName[len(fileName)-3:])
 
-		records, err := csv.ReadAll(reader)
-		log.Printf("records received: %v", len(records))
-		if err != nil {
-			return err
-		}
 		txID := nuid.Next()
-		ts := agg.TransactionSummary{txID, len(records)}
-		err = ec.Publish("validation.tx", ts)
-		if err != nil {
-			return err
-		}
 
-		for i, r := range records {
+		if fileName[len(fileName)-3:] == "xml" {
+			log.Println("File type XML")
+			records := xml.XmlParse(c.Request().Body())
+			for i, r := range records {
+				// r := removeBlanks(r.AsMap())
+				// r["OriginalLine"] = strconv.Itoa(i + 1)
+				// r["TxID"] = txID
+				fmt.Print(i);
+				err := ec.Publish("validation.naplan", r)
+				if err != nil {
+					return err
+				}
+			}
+			// Total records?
+			log.Println("...all records converted & published for validation")
 
-			r := removeBlanks(r.AsMap())
-			r["OriginalLine"] = strconv.Itoa(i + 1)
-			r["TxID"] = txID
-			// log.Printf("%+v\n\n", r)
+		} else if fileName[len(fileName)-3:] == "csv" {
+			log.Println("File type CSV")
+			reader := csv.WithIoReader(ioutil.NopCloser(c.Request().Body()))
+			records, err := csv.ReadAll(reader)
 
-			err := ec.Publish("validation.naplan", r)
+			log.Printf("records received: %v", len(records))
 			if err != nil {
 				return err
 			}
+			ts := agg.TransactionSummary{txID, len(records)}
+			err = ec.Publish("validation.tx", ts)
+			if err != nil {
+				return err
+			}
+
+			for i, r := range records {
+				r := removeBlanks(r.AsMap())
+				r["OriginalLine"] = strconv.Itoa(i + 1)
+				r["TxID"] = txID
+				// log.Printf("%+v\n\n", r)
+
+				err := ec.Publish("validation.naplan", r)
+				if err != nil {
+					return err
+				}
+			}
+			log.Println("...all records converted & published for validation")
+		} else {
+			log.Println("File type Unknown")
+
 		}
-		log.Println("...all records converted & published for validation")
+
 
 		return c.String(http.StatusOK, txID)
 	})
