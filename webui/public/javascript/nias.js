@@ -23,6 +23,8 @@
 
 			// Temporary remove mimetype - not supported on some Windows Browsers
             // if (file.type.match(textType) || file.type.match(textTypeMS)) {
+
+				var fileName = file.name.replace( /[<>:"\/\\|?*]+/g, '' );
                 var reader = new FileReader();
                 var progressNode = document.getElementById("upload-progress");
 
@@ -35,7 +37,7 @@
 
                 reader.onload = function(e) {
                     // fileDisplayArea.innerText = reader.result;
-                    $.post("/validate/naplan/reg/any", reader.result, function(data) {
+                    $.post("/validate/naplan/reg/" + fileName, reader.result, function(data) {
                         txID = data
                             // console.log(txID)
 
