@@ -15,6 +15,17 @@ fi
 # give the nats server time to come up
 sleep 2
 
+# Build
+(cd aggregator; go build)
+(cd aslvalidator; go build)
+(cd idvalidator; go build)
+(cd schemavalidator; go build)
+(cd csvxmlconverter; go build)
+(cd dobvalidator; go build)
+(cd webui; go build)
+
+# Run
+
 (cd aggregator; ./aggregator & echo $! >> ../nias.pid)
 ./aslvalidator/aslvalidator & echo $! >> nias.pid
 ./idvalidator/idvalidator & echo $! >> nias.pid
