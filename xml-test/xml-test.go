@@ -23,8 +23,7 @@ func main() {
 
 	records := xml.XmlParse(xmlFile)
 	for i, r := range records {
-		fmt.Print(i)
-		// fmt.Println(r.FamilyName)
-		fmt.Printf("%+v\n", r)
+		fmt.Printf("%d - %s %s\n", i, r.GivenName, r.FamilyName)
+		// fmt.Printf("%+v\n", r)	// Print full record
 	}
 }
