@@ -1,5 +1,9 @@
 #!/bin/bash
 
+mkdir -p build/Mac
+mkdir -p build/Win32
+mkdir -p build/Win64
+
 echo "Building Mac binaries..."
 cd ./aggregator
 go get

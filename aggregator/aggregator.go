@@ -2,15 +2,15 @@ package main
 
 import (
 	gcsv "encoding/csv"
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"github.com/labstack/echo/engine/standard"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
-	"io/ioutil"
-	"github.com/labstack/echo/engine/standard"
 
 	"github.com/kardianos/osext"
 	"github.com/labstack/echo"
@@ -127,11 +127,20 @@ func main() {
 		if fileName[len(fileName)-3:] == "xml" {
 			log.Println("File type XML")
 			records := xml.XmlParse(c.Request().Body())
+
+			log.Printf("records received: %v", len(records))
+			ts := agg.TransactionSummary{txID, len(records)}
+			err := ec.Publish("validation.tx", ts)
+			if err != nil {
+				return err
+			}
+
 			for i, r := range records {
+				r := r
 				// r := removeBlanks(r.AsMap())
-				// r["OriginalLine"] = strconv.Itoa(i + 1)
-				// r["TxID"] = txID
-				fmt.Print(i);
+				r.OriginalLine = strconv.Itoa(i + 1)
+				r.TxID = txID
+				fmt.Print(i)
 				err := ec.Publish("validation.naplan", r)
 				if err != nil {
 					return err
@@ -171,7 +180,6 @@ func main() {
 			log.Println("File type Unknown")
 
 		}
-
 
 		return c.String(http.StatusOK, txID)
 	})
