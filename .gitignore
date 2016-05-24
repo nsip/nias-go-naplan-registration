@@ -31,3 +31,5 @@ schemavalidator/schemavalidator
 csvxmlconverter/csvxmlconverter
 webui/webui
 nias.pid
+
+build
