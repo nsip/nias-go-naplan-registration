@@ -31,10 +31,11 @@ go build -o $CWD/build/Mac/csvxmlconverter
 cd ../webui
 go get
 go build -o $CWD/build/Mac/webui
+cd ..
 rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Mac/
 cp gonias.sh $CWD/build/Mac/
+cp shutdown.sh $CWD/build/Mac/
 echo "...all Mac binaries built..."
-cd ..
 echo "Building Windows64 binaries..."
 cd ../../nats-io/gnatsd
 go get
@@ -54,10 +55,10 @@ cd ../csvxmlconverter
 GOOS=windows GOARCH=amd64 go build -o $CWD/build/Win64/csvxmlconverter.exe
 cd ../webui
 GOOS=windows GOARCH=amd64 go build -o $CWD/build/Win64/webui.exe
+cd ..
 rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win64/
 cp gonias.bat $CWD/build/Win64/
 echo "...all Windows64 binaries built..."
-cd ..
 echo "Building Windows32 binaries..."
 cd ../../nats-io/gnatsd
 go get
@@ -77,8 +78,8 @@ cd ../csvxmlconverter
 GOOS=windows GOARCH=386 go build -o $CWD/build/Win32/csvxmlconverter.exe
 cd ../webui
 GOOS=windows GOARCH=386 go build -o $CWD/build/Win32/webui.exe
+cd ..
 rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win32/
 cp gonias.bat $CWD/build/Win32/
 echo "...all Windows32 binaries built..."
 echo "go-nias Build Complete."
-

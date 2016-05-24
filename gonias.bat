@@ -13,7 +13,7 @@ start aggregator
 start aslvalidator
 start idvalidator
 start schemavalidator
-start dobvalidator
+start dobvalidator -tstyr 2016
 start csvxmlconverter
 start webui
 

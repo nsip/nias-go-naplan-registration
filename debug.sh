@@ -10,18 +10,18 @@ fi
 
 #rem Run the NIAS services. Add to the BOTTOM of this list
 # store each PID in pid list
-./gnatsd & echo $! > nias.pid
+../../nats-io/gnatsd/gnatsd & echo $! > nias.pid
 
 # give the nats server time to come up
 sleep 2
 
-./aggregator & echo $! >> nias.pid
-./aslvalidator & echo $! >> nias.pid
-./idvalidator & echo $! >> nias.pid
-./schemavalidator & echo $! >> nias.pid
-./csvxmlconverter & echo $! >> nias.pid
-./dobvalidator -tstyr 2016 & echo $! >> nias.pid
-./webui & echo $! >> nias.pid
+(cd aggregator; ./aggregator & echo $! >> ../nias.pid)
+./aslvalidator/aslvalidator & echo $! >> nias.pid
+./idvalidator/idvalidator & echo $! >> nias.pid
+(cd schemavalidator; ./schemavalidator & echo $! >> ../nias.pid)
+(cd csvxmlconverter; ./csvxmlconverter & echo $! >> ../nias.pid)
+./dobvalidator/dobvalidator -tstyr 2016 & echo $! >> nias.pid
+(cd webui; ./webui & echo $! >> ../nias.pid)
 
 echo "Run the web client (launch browser here):"
 echo "http://localhost:8080/nias"
