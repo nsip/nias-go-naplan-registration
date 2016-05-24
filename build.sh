@@ -37,7 +37,7 @@ cd ../webui
 go get
 go build -o $CWD/build/Mac/go-nias/webui
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Mac/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Mac/go-nias/
 cp gonias.sh $CWD/build/Mac/go-nias/
 cp shutdown.sh $CWD/build/Mac/go-nias/
 cd build/Mac
@@ -66,7 +66,7 @@ GOOS=windows GOARCH=amd64 go build -o $CWD/build/Win64/go-nias/csvxmlconverter.e
 cd ../webui
 GOOS=windows GOARCH=amd64 go build -o $CWD/build/Win64/go-nias/webui.exe
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win64/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win64/go-nias/
 cp gonias.bat $CWD/build/Win64/go-nias/
 cd build/Win64
 zip -r ../go-nias-Win64.zip go-nias/
@@ -94,7 +94,7 @@ GOOS=windows GOARCH=386 go build -o $CWD/build/Win32/go-nias/csvxmlconverter.exe
 cd ../webui
 GOOS=windows GOARCH=386 go build -o $CWD/build/Win32/go-nias/webui.exe
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win32/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Win32/go-nias/
 cp gonias.bat $CWD/build/Win32/go-nias/
 cd build/Win32
 zip -r ../go-nias-Win32.zip go-nias/
@@ -131,7 +131,7 @@ cd ../webui
 go get
 GOOS=linux GOARCH=amd64 go build -o $CWD/build/Linux64/go-nias/webui
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Linux64/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Linux64/go-nias/
 cp gonias.sh $CWD/build/Linux64/go-nias/
 cp shutdown.sh $CWD/build/Linux64/go-nias/
 cd build/Linux64
@@ -167,7 +167,7 @@ cd ../webui
 go get
 GOOS=linux GOARCH=386 go build -o $CWD/build/Linux32/go-nias/webui
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Linux32/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/Linux32/go-nias/
 cp gonias.sh $CWD/build/Linux32/go-nias/
 cp shutdown.sh $CWD/build/Linux32/go-nias/
 cd build/Linux32
@@ -203,7 +203,7 @@ cd ../webui
 go get
 GOOS=linux GOARCH=arm GOARM=7 go build -o $CWD/build/LinuxArm7/go-nias/webui
 cd ..
-rsync -a webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/LinuxArm7/go-nias/
+rsync -a csvxmlconverter/templates webui/public schemavalidator/schemas aslvalidator/schoolslist test_data $CWD/build/LinuxArm7/go-nias/
 cp gonias.sh $CWD/build/LinuxArm7/go-nias/
 cp shutdown.sh $CWD/build/LinuxArm7/go-nias/
 cd build/LinuxArm7
