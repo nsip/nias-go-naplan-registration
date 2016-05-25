@@ -1,6 +1,5 @@
 <StudentPersonals  xmlns="http://www.sifassociation.org/au/datamodel/3.4">
-
-    <StudentPersonal RefId="b6a324e0-59db-4805-b773-fed4e02c82a8">
+    <StudentPersonal RefId="0dd77bc5-d27d-4cb1-bce6-5a88db44f954">
       <LocalId>gqhvy514</LocalId>
       <StateProvinceId></StateProvinceId>
       <OtherIdList>
@@ -29,21 +28,21 @@
         <Demographics>
           <IndigenousStatus>2</IndigenousStatus>
           <Sex>2</Sex>
-          <BirthDate>2009-06-14</BirthDate>
-          <CountryOfBirth>1101</CountryOfBirth>
+          <BirthDate>2009-08-01</BirthDate>
+          <CountryOfBirth>118</CountryOfBirth>
           <LanguageList>
             <Language>
-              <Code>1201</Code>
+              <Code>118</Code>
               <LanguageType>4</LanguageType>
             </Language>
           </LanguageList>
-          <VisaSubClass>101</VisaSubClass>
+          <VisaSubClass>500</VisaSubClass>
           <LBOTE>Y</LBOTE>
         </Demographics>
         <AddressList>
           <Address Type="0765" Role="012B">
             <Street>
-              <Line1>634 Frenchmen Street</Line1>
+              <Line1>634 Frenchmen Street asdfgfdnbdjhgtghdujhasdfg</Line1>
               <Line2></Line2>
             </Street>
             <City>CORNELIA CREEK</City>
@@ -59,8 +58,8 @@
           <Code>3</Code>
         </YearLevel>
         <FTE>0.63</FTE>
-        <Parent1Language>1201</Parent1Language>
-        <Parent2Language>1201</Parent2Language>
+        <Parent1Language>6199</Parent1Language>
+        <Parent2Language>118</Parent2Language>
         <Parent1EmploymentType>4</Parent1EmploymentType>
         <Parent2EmploymentType>1</Parent2EmploymentType>
         <Parent1SchoolEducationLevel>4</Parent1SchoolEducationLevel>
@@ -68,7 +67,7 @@
         <Parent1NonSchoolEducation>7</Parent1NonSchoolEducation>
         <Parent2NonSchoolEducation>6</Parent2NonSchoolEducation>
         <LocalCampusId>1</LocalCampusId>
-        <SchoolACARAId>lxwnp178</SchoolACARAId>
+        <SchoolACARAId>44370</SchoolACARAId>
         <TestLevel><Code>3</Code></TestLevel>
         <Homegroup></Homegroup>
         <ClassCode>3E</ClassCode>
@@ -82,7 +81,7 @@
       <Sensitive>Y</Sensitive>
       <OfflineDelivery>N</OfflineDelivery>
     </StudentPersonal>
-    <StudentPersonal RefId="6d02d4d1-44ba-464e-9e5f-faa4640f616c">
+    <StudentPersonal RefId="9cd05434-ebb8-4309-9f28-839695debab7">
       <LocalId>mbmrr089</LocalId>
       <StateProvinceId></StateProvinceId>
       <OtherIdList>
@@ -111,7 +110,7 @@
         <Demographics>
           <IndigenousStatus>1</IndigenousStatus>
           <Sex>2</Sex>
-          <BirthDate>2009-07-17</BirthDate>
+          <BirthDate>2008-07-17</BirthDate>
           <CountryOfBirth>1101</CountryOfBirth>
           <LanguageList>
             <Language>
@@ -141,7 +140,7 @@
           <Code>5</Code>
         </YearLevel>
         <FTE>0.28</FTE>
-        <Parent1Language>1201</Parent1Language>
+        <Parent1Language></Parent1Language>
         <Parent2Language>5203</Parent2Language>
         <Parent1EmploymentType>1</Parent1EmploymentType>
         <Parent2EmploymentType>3</Parent2EmploymentType>
@@ -150,7 +149,7 @@
         <Parent1NonSchoolEducation>5</Parent1NonSchoolEducation>
         <Parent2NonSchoolEducation>5</Parent2NonSchoolEducation>
         <LocalCampusId>1</LocalCampusId>
-        <SchoolACARAId>lxwnp178</SchoolACARAId>
+        <SchoolACARAId>40987</SchoolACARAId>
         <TestLevel><Code>5</Code></TestLevel>
         <Homegroup></Homegroup>
         <ClassCode>5D</ClassCode>
@@ -164,7 +163,7 @@
       <Sensitive>Y</Sensitive>
       <OfflineDelivery>N</OfflineDelivery>
     </StudentPersonal>
-    <StudentPersonal RefId="00e33d15-3977-4ac9-8ee9-41cdf75da9b9">
+    <StudentPersonal RefId="3b8aff45-3fc8-413d-aeac-78e566d47673">
       <LocalId>wiqbk222</LocalId>
       <StateProvinceId></StateProvinceId>
       <OtherIdList>
@@ -193,7 +192,7 @@
         <Demographics>
           <IndigenousStatus>2</IndigenousStatus>
           <Sex>1</Sex>
-          <BirthDate>2009-09-08</BirthDate>
+          <BirthDate>2007-09-08</BirthDate>
           <CountryOfBirth>1101</CountryOfBirth>
           <LanguageList>
             <Language>
@@ -220,7 +219,7 @@
       <MostRecent>
         <SchoolLocalId>37298</SchoolLocalId>
         <YearLevel>
-          <Code>7</Code>
+          <Code>UG</Code>
         </YearLevel>
         <FTE>0.69</FTE>
         <Parent1Language>1201</Parent1Language>
@@ -232,7 +231,7 @@
         <Parent1NonSchoolEducation>6</Parent1NonSchoolEducation>
         <Parent2NonSchoolEducation>6</Parent2NonSchoolEducation>
         <LocalCampusId>1</LocalCampusId>
-        <SchoolACARAId>lxwnp178</SchoolACARAId>
+        <SchoolACARAId>44727</SchoolACARAId>
         <TestLevel><Code>7</Code></TestLevel>
         <Homegroup></Homegroup>
         <ClassCode>7F</ClassCode>
@@ -246,7 +245,7 @@
       <Sensitive>Y</Sensitive>
       <OfflineDelivery>Y</OfflineDelivery>
     </StudentPersonal>
-    <StudentPersonal RefId="d0b00d86-ffd1-41d8-b437-326ecd14eab8">
+    <StudentPersonal RefId="eaea2199-7cd0-40d6-820e-4a97b942cdcc">
       <LocalId></LocalId>
       <StateProvinceId></StateProvinceId>
       <OtherIdList>
@@ -302,7 +301,7 @@
       <MostRecent>
         <SchoolLocalId>37298</SchoolLocalId>
         <YearLevel>
-          <Code>7</Code>
+          <Code>0</Code>
         </YearLevel>
         <FTE>0.16</FTE>
         <Parent1Language>1201</Parent1Language>
@@ -314,7 +313,7 @@
         <Parent1NonSchoolEducation>8</Parent1NonSchoolEducation>
         <Parent2NonSchoolEducation>5</Parent2NonSchoolEducation>
         <LocalCampusId>1</LocalCampusId>
-        <SchoolACARAId>lxwnp178</SchoolACARAId>
+        <SchoolACARAId>49360</SchoolACARAId>
         <TestLevel><Code>7</Code></TestLevel>
         <Homegroup></Homegroup>
         <ClassCode>7F</ClassCode>
@@ -328,7 +327,7 @@
       <Sensitive>N</Sensitive>
       <OfflineDelivery>U</OfflineDelivery>
     </StudentPersonal>
-    <StudentPersonal RefId="5c1b3355-6617-496d-9a80-c5cb74e57722">
+    <StudentPersonal RefId="f30f7ef0-0571-4d6c-8b86-5076e4b46539">
       <LocalId>wiqbk222</LocalId>
       <StateProvinceId></StateProvinceId>
       <OtherIdList>
@@ -357,7 +356,7 @@
         <Demographics>
           <IndigenousStatus>2</IndigenousStatus>
           <Sex>1</Sex>
-          <BirthDate>2009-09-08</BirthDate>
+          <BirthDate>2008-06-14</BirthDate>
           <CountryOfBirth>1101</CountryOfBirth>
           <LanguageList>
             <Language>
@@ -384,7 +383,7 @@
       <MostRecent>
         <SchoolLocalId>37298</SchoolLocalId>
         <YearLevel>
-          <Code>7</Code>
+          <Code>P</Code>
         </YearLevel>
         <FTE>0.69</FTE>
         <Parent1Language>1201</Parent1Language>
@@ -396,7 +395,7 @@
         <Parent1NonSchoolEducation>6</Parent1NonSchoolEducation>
         <Parent2NonSchoolEducation>6</Parent2NonSchoolEducation>
         <LocalCampusId>1</LocalCampusId>
-        <SchoolACARAId>lxwnp178</SchoolACARAId>
+        <SchoolACARAId>144370</SchoolACARAId>
         <TestLevel><Code>7</Code></TestLevel>
         <Homegroup></Homegroup>
         <ClassCode>7F</ClassCode>

@@ -30,40 +30,40 @@ type student struct {
 	OriginalLine string
 
 	// Important fields
-	ASLSchoolId               string `json:",omitempty"`
-	AddressLine1              string `json:",omitempty" xml:"PersonInfo>AddressList>Street>Address>Line1"`
-	AddressLine2              string `json:",omitempty" xml:"PersonInfo>AddressList>Street>Address>Line2"`
+	ASLSchoolId               string `json:",omitempty" xml:"MostRecent>SchoolACARAId"`
+	AddressLine1              string `json:",omitempty" xml:"PersonInfo>AddressList>Address>Street>Line1"`
+	AddressLine2              string `json:",omitempty" xml:"PersonInfo>AddressList>Address>Street>Line2"`
 	BirthDate                 string `json:",omitempty" xml:"PersonInfo>Demographics>BirthDate"`
-	ClassCode                 string `json:",omitempty" xml:"MostRecent/ClassCode"`
+	ClassCode                 string `json:",omitempty" xml:"MostRecent>ClassCode"`
 	CountryOfBirth            string `json:",omitempty" xml:"PersonInfo>Demographics>CountryOfBirth"`
 	DiocesanId                string `json:",omitempty"`
-	EducationSupport          string `json:",omitempty"`
+	EducationSupport          string `json:",omitempty" xml:"EducationSupport"`
 	FFPOS                     string `json:",omitempty" xml:"MostRecent>FFPOS"`
 	FTE                       string `json:",omitempty" xml:"MostRecent>FTE"`
 	FamilyName                string `json:",omitempty" xml:"PersonInfo>Name>FamilyName"`
 	GivenName                 string `json:",omitempty" xml:"PersonInfo>Name>GivenName"`
-	HomeSchooledStudent       string `json:",omitempty"`
-	Homegroup                 string `json:",omitempty"`
-	IndigenousStatus          string `json:",omitempty"`
+	HomeSchooledStudent       string `json:",omitempty" xml:"HomeSchooledStudent"`
+	Homegroup                 string `json:",omitempty" xml:"MostRecent>Homegroup"`
+	IndigenousStatus          string `json:",omitempty" xml:"PersonInfo>Demographics>IndigenousStatus"`
 	JurisdictionId            string `json:",omitempty"`
 	LBOTE                     string `json:",omitempty" xml:"PersonInfo>Demographics>LBOTE"`
-	LocalCampusId             string `json:",omitempty"`
-	LocalId                   string `json:",omitempty" xml:"LocalId" json:"ID"`
-	Locality                  string `json:",omitempty"`
-	MainSchoolFlag            string `json:",omitempty"`
+	LocalCampusId             string `json:",omitempty" xml:"MostRecent>LocalCampusId"`
+	LocalId                   string `json:",omitempty" xml:"LocalId"`
+	Locality                  string `json:",omitempty" xml:"PersonInfo>AddressList>Address>City"`
+	MainSchoolFlag            string `json:",omitempty" xml:"MostRecent>MembershipType"`
 	MiddleName                string `json:",omitempty" xml:"PersonInfo>Name>MiddleName"`
 	NationalId                string `json:",omitempty"`
-	OfflineDelivery           string `json:",omitempty"`
+	OfflineDelivery           string `json:",omitempty" xml:"OfflineDelivery"`
 	OtherId                   string `json:",omitempty"`
-	OtherSchoolId             string `json:",omitempty"`
-	Parent1LOTE               string `json:",omitempty" xml:"MostRecent>Parent1Language"` // Wrong?
-	Parent1NonSchoolEducation string `json:",omitempty" xml:"MostRecent>Parent1EmploymentType"`
-	Parent1Occupation         string `json:",omitempty"`
-	Parent1SchoolEducation    string `json:",omitempty"`
+	OtherSchoolId             string `json:",omitempty" xml:"MostRecent>OtherEnrollmentSchoolACARAId"`
+	Parent1LOTE               string `json:",omitempty" xml:"MostRecent>Parent1Language"`
+	Parent1NonSchoolEducation string `json:",omitempty" xml:"MostRecent>Parent1NonSchoolEducation"`
+	Parent1Occupation         string `json:",omitempty" xml:"MostRecent>Parent1EmploymentType"`
+	Parent1SchoolEducation    string `json:",omitempty" xml:"MostRecent>Parent1SchoolEducationLevel"`
 	Parent2LOTE               string `json:",omitempty" xml:"MostRecent>Parent2Language"`
-	Parent2NonSchoolEducation string `json:",omitempty"`
+	Parent2NonSchoolEducation string `json:",omitempty" xml:"MostRecent>Parent2NonSchoolEducation"`
 	Parent2Occupation         string `json:",omitempty" xml:"MostRecent>Parent2EmploymentType"`
-	Parent2SchoolEducation    string `json:",omitempty"`
+	Parent2SchoolEducation    string `json:",omitempty" xml:"MostRecent>Parent2SchoolEducationLevel"`
 	PlatformId                string `json:",omitempty"`
 	Postcode                  string `json:",omitempty" xml:"PersonInfo>AddressList>Address>PostalCode`
 	PreferredName             string `json:",omitempty" xml:"PersonInfo>Name>PreferredGivenName"`
@@ -76,14 +76,14 @@ type student struct {
 	PreviousSectorId          string `json:",omitempty"`
 	PreviousStateProvinceId   string `json:",omitempty"`
 	PreviousTAAId             string `json:",omitempty"`
-	ReportingSchoolId         string `json:",omitempty"`
-	SchoolLocalId             string `json:",omitempty"`
+	ReportingSchoolId         string `json:",omitempty" xml:"MostRecent>ReportingSchoolId"`
+	SchoolLocalId             string `json:",omitempty" xml:"MostRecent>SchoolLocalId"`
 	SectorId                  string `json:",omitempty"`
-	Sensitive                 string `json:",omitempty"`
+	Sensitive                 string `json:",omitempty" xml:"Sensitive"`
 	Sex                       string `json:",omitempty" xml:"PersonInfo>Demographics>Sex"`
-	StateProvinceId           string `json:",omitempty" xml:"StateProvinceId"`
-	StateTerritory            string `json:",omitempty"`
-	StudentLOTE               string `json:",omitempty"`
+	StateProvinceId           string `json:",omitempty"`
+	StateTerritory            string `json:",omitempty" xml:"PersonInfo>AddressList>Address>StateProvince"`
+	StudentLOTE               string `json:",omitempty" xml:"PersonInfo>Demographics>LanguageList>Language>Code"`
 	TAAId                     string `json:",omitempty"`
 	TestLevel                 string `json:",omitempty" xml:"MostRecent>TestLevel>Code"`
 	VisaCode                  string `json:",omitempty" xml:"PersonInfo>Demographics>VisaSubClass"`
