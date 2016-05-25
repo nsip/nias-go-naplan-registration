@@ -140,7 +140,7 @@ func main() {
 				// r := removeBlanks(r.AsMap())
 				r.OriginalLine = strconv.Itoa(i + 1)
 				r.TxID = txID
-				fmt.Print(i)
+				// fmt.Print(i)
 				err := ec.Publish("validation.naplan", r)
 				if err != nil {
 					return err
