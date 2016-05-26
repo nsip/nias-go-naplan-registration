@@ -4,7 +4,11 @@ NIAS. golang naplan registration modules.
 This is a Golang version of the [NIAS](http://github.com/nsip/nias) open-source components, specific to NAPLAN validation. It uses
 [NATS](http://nats.io) queues. This module is limited to NAPLAN registration validation.
 
-# Installation
+# Installation - Binary
+Manually unzip file directory in the zip "go-nias" and put it in c:\
+Then run gonias.bat file from that directory
+
+# Installation - source code
 
 [Install golang](https://golang.org/doc/install). Making sure you have a working
 `$GOPATH` etc (common mistake is to skip the `src/` directory after `$GOPATH`)
