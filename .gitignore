@@ -30,6 +30,7 @@ idvalidator/idvalidator
 schemavalidator/schemavalidator
 csvxmlconverter/csvxmlconverter
 webui/webui
+release/release
 nias.pid
 
 build

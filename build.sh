@@ -11,8 +11,8 @@ CWD=`pwd`
 
 # MAC OS X (64 only)
 echo "Building Mac binaries..."
+go get github.com/nats-io/gnatsd
 cd ../../nats-io/gnatsd
-go get
 go build -o $CWD/build/Mac/go-nias/gnatsd
 cd $CWD
 cd ./aggregator
