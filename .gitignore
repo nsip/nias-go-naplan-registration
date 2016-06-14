@@ -34,3 +34,6 @@ release/release
 nias.pid
 
 build
+
+# Downloaded each time
+schemavalidator/schemas/core.json

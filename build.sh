@@ -9,6 +9,9 @@ mkdir -p build/Linux64/go-nias
 mkdir -p build/Linux32/go-nias
 CWD=`pwd`
 
+echo "Downloading CORE.json"
+curl https://raw.githubusercontent.com/nsip/registration-data-set/master/core.json > schemavalidator/schemas/core.json
+
 # MAC OS X (64 only)
 echo "Building Mac binaries..."
 go get github.com/nats-io/gnatsd
