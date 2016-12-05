@@ -1,3 +1,5 @@
+**NOTE: THIS REPOSITORY HAS BEEN SUPERSEDED BY [NIAS2](https://github.com/nsip/nias2)**
+
 # nias-go-naplan-registration
 NIAS. golang naplan registration modules.
 
