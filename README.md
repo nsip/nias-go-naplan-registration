@@ -1,6 +1,12 @@
 **NOTE: THIS REPOSITORY HAS BEEN SUPERSEDED BY [NIAS2](https://github.com/nsip/nias2)**
 
 # nias-go-naplan-registration
+
+***DEPRECATED (RETIRED)***
+
+*This repository is obsolete and retired (archived). This is an unmantained repository. In particular, note that it is not being updated with security patches, including those for dependent libraries.*
+
+
 NIAS. golang naplan registration modules.
 
 This is a Golang version of the [NIAS](http://github.com/nsip/nias) open-source components, specific to NAPLAN validation. It uses
